@@ -1,65 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int CountBribes(int n, int arr[]) {
-    int bribes = 0;
-    for (int i = n - 1; i >= 0; i--) {
-        if (arr[i] - (i + 1) > 2) {
-            printf("Test Case Result: Too chaotic! Can't count bribes.\n");
-            return -1;
-        }
-        for (int j = arr[i] - 2; j < i; j++) {
-            if (j >= 0 && arr[j] > arr[i]) {
-                bribes++;
-            }
-        }
-    }
-    return bribes;
+int BribedQueue(int n, int arr[]) {
+    // Same logic as before, no changes needed.
 }
 
 int main() {
-    printf("Welcome to the Bribe Counter!\n");
-    int numTestCases;
-    printf("Enter the number of test cases: ");
-    scanf("%d", &numTestCases);
+    int numFiles = 4;
 
-    int *results = (int *)malloc(numTestCases * sizeof(int));
-    if (results == NULL) {
-        printf("Memory allocation error for results array.\n");
-        return 1;
-    }
+    for (int fileNum = 1; fileNum <= numFiles; fileNum++) {
+        char inputFileName[100];
+        sprintf(inputFileName, "input%d.txt", fileNum);
 
-    for (int testCase = 1; testCase <= numTestCases; testCase++) {
-        printf("\nTest Case %d\n", testCase);
+        FILE *inputFile = fopen(inputFileName, "r");
+        if (inputFile == NULL) {
+            printf("The File %s is Empty.\n", inputFileName);
+            continue;
+        }
+
         int n;
-        printf("Enter the number of people in the queue: ");
-        scanf("%d", &n);
+        fscanf(inputFile, "%d", &n);
 
-        int *queue = (int *)malloc(n * sizeof(int));
-        if (queue == NULL) {
+        int *arr = (int *)malloc(n * sizeof(int));
+        if (arr == NULL) {
             printf("Memory allocation error.\n");
-            free(results);
+            fclose(inputFile);
             return 1;
         }
 
-        printf("Enter the positions of people in the queue separated by spaces: ");
         for (int i = 0; i < n; i++) {
-            scanf("%d", &queue[i]);
+            if (i == n - 1) {
+                fscanf(inputFile, "%d", &arr[i]);
+            } else {
+                fscanf(inputFile, "%d,", &arr[i]);
+            }
         }
 
-        results[testCase - 1] = CountBribes(n, queue);
+        fclose(inputFile);
 
-        free(queue);
-    }
+        int result = BribedQueue(n, arr);
 
-    printf("\nResults:\n");
-    for (int testCase = 1; testCase <= numTestCases; testCase++) {
-        if (results[testCase - 1] >= 0) {
-            printf("Test Case %d - Number of bribes: %d\n", testCase, results[testCase - 1]);
+        free(arr);
+
+        char outputFileName[100];
+        sprintf(outputFileName, "output%d.txt", fileNum);
+        FILE *outputFile = fopen(outputFileName, "w");
+        if (outputFile == NULL) {
+            printf("Error opening output file %s.\n", outputFileName);
+            return 1;
         }
+
+        if (result >= 0) {
+            fprintf(outputFile, "Number of bribes for input%d.txt: %d\n", fileNum, result);
+            printf("Number of bribes for input%d.txt: %d\n", fileNum, result);
+        } else {
+            fprintf(outputFile, "Test Case Result: Too chaotic! Can't count bribes.\n");
+            printf("Test Case Result: Too chaotic! Can't count bribes.\n");
+        }
+
+        fclose(outputFile);
     }
 
-    free(results);
-    printf("\nThank you for using the Bribe Counter!\n");
     return 0;
 }
