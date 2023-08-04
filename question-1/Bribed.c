@@ -5,6 +5,7 @@ int BribedQueue(int n, int arr[]) {
     // Same logic as before, no changes needed.
 }
 
+
 int main() {
     int numFiles = 4;
 
