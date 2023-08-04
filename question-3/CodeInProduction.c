@@ -18,6 +18,7 @@ void printArray(int arr[], size_t n) {
     printf("\n");
 }
 
+
 // Merge two sorted arrays into one sorted array
 void merge(int arr[], int left, int mid, int right) {
     int n1 = mid - left + 1;
