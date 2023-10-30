@@ -61,7 +61,7 @@ struct Node* leftRotate(struct Node* x){
     return y;
 }
  
-struct Node insert(struct Node node, int key){
+struct Node *insert(struct Node *node, int key){
     if (node == NULL)
         return  createNode(key);
  
@@ -106,7 +106,6 @@ void preOrder(struct Node *root)
  
 int main(){
     struct Node * root = NULL;
- 
  
     root = insert(root, 1);
     root = insert(root, 2);
